@@ -1,6 +1,7 @@
 importScripts('https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging-compat.js');
 
+// پیکربندی Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBVtKyIzcD0xVEMOjeMYjDdNRozFVVrmRo",
   authDomain: "liom-31952.firebaseapp.com",
@@ -12,17 +13,46 @@ const firebaseConfig = {
   measurementId: "G-TVWYWYEH1D"
 };
 
+// مقداردهی Firebase
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage((payload) => {
-  console.log('Received background message: ', payload);
-  
+// دریافت پیام‌ها در پس‌زمینه
+messaging.onBackgroundMessage(async (payload) => {
+  console.log('پیام پس‌زمینه دریافت شد: ', payload);
+
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
-    icon: "/icons/favicon.ico"
+    icon: "/icons/favicon.ico",
+    data: {
+      url: payload.data.url || "/login" // ذخیره URL یا داده اضافی
+    }
   };
 
-  return self.registration.showNotification(notificationTitle, notificationOptions);
+  // نمایش نوتیفیکیشن
+  try {
+    await self.registration.showNotification(notificationTitle, notificationOptions);
+  } catch (error) {
+    console.error("خطا در نمایش نوتیفیکیشن: ", error);
+  }
+});
+
+// رویداد کلیک روی نوتیفیکیشن
+self.addEventListener('notificationclick', (event) => {
+  const notification = event.notification;
+  const notificationData = notification.data; // داده‌های نوتیفیکیشن
+
+  // بستن نوتیفیکیشن
+  notification.close();
+
+  // اگر داده URL وجود داشت، باز کردن URL
+  if (notificationData && notificationData.url) {
+    event.waitUntil(
+      clients.openWindow(notificationData.url) // باز کردن URL
+    );
+  } else {
+    // اگر URL نبود، می‌تونی کار دیگری انجام بدی (مثلاً نمایش صفحه اصلی)
+    event.waitUntil(clients.openWindow('/'));
+  }
 });
