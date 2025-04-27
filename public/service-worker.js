@@ -4,7 +4,8 @@ const PRECACHE_URLS = [
   '/manifest.json',
   '/icons/favicon.ico',
   '/icons/icon-192x192.png',
-  '/icons/icon-512x512.png'
+  '/icons/icon-512x512.png',
+  '/offline.html' // اضافه کردن صفحه آفلاین به لیست کش
 ];
 
 self.addEventListener('install', event => {
@@ -17,8 +18,13 @@ self.addEventListener('install', event => {
 
 self.addEventListener('fetch', event => {
   event.respondWith(
-    caches.match(event.request)
-      .then(response => response || fetch(event.request))
+    caches.match(event.request).then(response => {
+      // اگر فایل از کش پیدا نشد، درخواست رو از شبکه بگیر
+      return response || fetch(event.request).catch(() => {
+        // اگر کاربر آفلاین بود، صفحه آفلاین رو نمایش بده
+        return caches.match('/offline.html');
+      });
+    })
   );
 });
 
