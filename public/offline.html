@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>آفلاین</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1 {
+      color: red;
+      font-size: 2rem;
+    }
+
+    p {
+      color: #555;
+      margin-top: 10px;
+      font-size: 1rem;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    button:active {
+      background-color: #004085;
+    }
+
+    /* برای ریسپانسیو بودن */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      p {
+        font-size: 0.9rem;
+      }
+
+      button {
+        padding: 8px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>شما آفلاین هستید</h1>
+  <p>لطفاً به اینترنت متصل شوید تا دوباره به برنامه دسترسی پیدا کنید.</p>
+  <button id="refreshBtn">رفرش</button>
+
+  <script>
+    // اضافه کردن عملکرد دکمه رفرش
+    document.getElementById('refreshBtn').addEventListener('click', () => {
+      // تغییر مسیر به صفحه اصلی (مثال: /index.html)
+      window.location.href = '/';  // اینجا می‌تونید هر مسیر دیگه‌ای که می‌خواهید قرار بدید
+    });
+  </script>
+</body>
+</html>
